@@ -1,9 +1,10 @@
 /* Utils.em - a small collection of useful editing macros */
 /*-------------------------------------------------------------------------
-	checkEnv	Header-------writen 		by 		iBirds	EMail:wtniao@163.com, QQ:66723900
+	checkEnv	Header-------writen 		by 		iBirds	
+	E-Mail:wtniao@163.com,  zhihu:ibirds
 	
 	This macro functions is suitable for most c&c++ code of embeded devices software , in which there is too much
-	token like #ifdef ¡¢#elif and #if that programmer could hardly understand what they mean.
+	token like #ifdef ã€#elif and #if that programmer could hardly understand what they mean.
 	
 	This macro helps programmer understand code by turn useless code in to 
 	inactive code which looks gray and easy to be ignored.
@@ -30,7 +31,7 @@ macro Max(a,b)
 	return b;
 }
 
-//È¡ĞĞµÄÃû³Æ,ÀıÈçÈ¡"-Dversion=2.6"ÖĞµÄ"version"
+//å–è¡Œçš„åç§°,ä¾‹å¦‚å–"-Dversion=2.6"ä¸­çš„"version"
 macro nameOf(str)
 {
 	pos=0;
@@ -54,7 +55,7 @@ macro nameOf(str)
 	}
 }
 
-//È¡µÈÊ½µÄÖµ,ÀıÈçÈ¡"-Dversion=2.6"ÖĞµÄ"2.6"
+//å–ç­‰å¼çš„å€¼,ä¾‹å¦‚å–"-Dversion=2.6"ä¸­çš„"2.6"
 macro valueOf(str)
 {
 	pos=0;
@@ -83,7 +84,7 @@ macro valueOf(str)
 	}
 }
 
-//ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ,0´ú±í²»´æÔÚ,1´ú±í´æÔÚ
+//åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨,0ä»£è¡¨ä¸å­˜åœ¨,1ä»£è¡¨å­˜åœ¨
 macro ifExist(file)
 {
 	hbuf = OpenBuf(file);
@@ -98,7 +99,7 @@ macro ifExist(file)
 	}
 }
 
-//·µ»ØÌØ¶¨ÄÚÈİÔÚÎÄ¼şÖĞµÄĞĞĞòºÅ
+//è¿”å›ç‰¹å®šå†…å®¹åœ¨æ–‡ä»¶ä¸­çš„è¡Œåºå·
 macro lineOfFile(file, str)
 {
 	if(0 == ifExist(file))
@@ -125,7 +126,7 @@ macro lineOfFile(file, str)
 	}
 }
 macro GetPath(str)
-{//µ¹Ğò²éÕÒ"\"
+{//å€’åºæŸ¥æ‰¾"\"
 	pos = strlen(str) - 1;
 	while(pos >= 0)
 	{	
@@ -162,25 +163,25 @@ macro log()
 
 macro setEnvironment()
 {
-	//°æ±¾ÅĞ¶Ï,3.5065ÒÔÏÂ³ÌĞò²»Ö§³Ö
+	//ç‰ˆæœ¬åˆ¤æ–­,3.5065ä»¥ä¸‹ç¨‹åºä¸æ”¯æŒ
 	ProVer = GetProgramInfo ();
 	if(ProVer.versionMinor < 50 || ProVer.versionBuild < 60)
 	{
-		Msg("ÄúµÄSource Insight°æ±¾Ì«µÍ£¬ÈçĞèÊ¹ÓÃ´Ë¹¤¾ß£¬Çë°²×°3.50.0060¼°ÒÔÉÏ°æ¡£");
+		Msg("æ‚¨çš„Source Insightç‰ˆæœ¬å¤ªä½ï¼Œå¦‚éœ€ä½¿ç”¨æ­¤å·¥å…·ï¼Œè¯·å®‰è£…3.50.0060åŠä»¥ä¸Šç‰ˆã€‚");
 		stop
 	}
 
-	//»ñµÃ´úÂëËùÔÚÄ¿Â¼£¬²»ÂÛ¹¤³Ì½¨ÔÚÄÄÀï
+	//è·å¾—ä»£ç æ‰€åœ¨ç›®å½•ï¼Œä¸è®ºå·¥ç¨‹å»ºåœ¨å“ªé‡Œ
 	hProj = GetCurrentProj ();
 	dir_proj = GetCodeDir(hProj);
 
-	//²éÕÒmakefile,Éú²úmakelist.txtÎÄ¼ş
+	//æŸ¥æ‰¾makefile,ç”Ÿäº§makelist.txtæ–‡ä»¶
 	cmdline = cat("cmd /C \"dir ", "makefile /S /B > makeList.txt\"");
 	RunCmdLine(cmdline, dir_proj, 1);
 
 	ListFile = cat (dir_proj,"\\makeList.txt");
 
-	//¸ù¾İmakeList.txtµÄĞÅÏ¢£¬ÎªÃ¿Ò»¸ömakefile¶¼Ìí¼ÓÃüÁî
+	//æ ¹æ®makeList.txtçš„ä¿¡æ¯ï¼Œä¸ºæ¯ä¸€ä¸ªmakefileéƒ½æ·»åŠ å‘½ä»¤
 	hbuf = OpenBuf (ListFile)
 	count = 	GetBufLineCount (hbuf)
 	if(count == 0 || count == 1 && strlen(GetBufLine(hbuf, 0)) == 0)
@@ -207,13 +208,13 @@ macro setEnvironment()
 			CloseBuf (hbuf);
 			cmdline = "notepad @ListFile@";
 			RunCmdLine(cmdline, dir_proj, 0);
-			Msg("ÇëÔÚ@ListFile@ÄÚÌí¼ÓmakefileÂ·¾¶,ÈçÓĞ¶à¸ömakefile,ÔòÃ¿¸öÂ·¾¶Ò»ĞĞ,Íê³ÉºóµãÈ·¶¨¡£ÈçµÚÒ»ĞĞÎªc:\\code\\makefile");
+			Msg("è¯·åœ¨@ListFile@å†…æ·»åŠ makefileè·¯å¾„,å¦‚æœ‰å¤šä¸ªmakefile,åˆ™æ¯ä¸ªè·¯å¾„ä¸€è¡Œ,å®Œæˆåç‚¹ç¡®å®šã€‚å¦‚ç¬¬ä¸€è¡Œä¸ºc:\\code\\makefile");
 			hbuf = OpenBuf (ListFile);
 			count = GetBufLineCount (hbuf);
 			if(count <= 0 )
 			{
 				CloseBuf (hbuf);
-				Msg("Î´ÔÚmakeList.txtÖĞÖ¸Ã÷makefileÂ·¾¶,½«ÍË³ö!");
+				Msg("æœªåœ¨makeList.txtä¸­æŒ‡æ˜makefileè·¯å¾„,å°†é€€å‡º!");
 				stop;
 			}				
 		}
@@ -223,16 +224,16 @@ macro setEnvironment()
 	while(ln < count)
 	{
 		makefile = GetBufLine (hbuf, ln);
-		initGlobal(dir_proj, makefile);//ĞèÒªĞŞ¸Ä£¬Éú²úÏà¶ÔÂ·¾¶µÄ,ÔÚdir_projÏÂÖ±½Ó²úÉúdefined.*ÎÄ¼ş¡£
-		//ÏòmakefileÎÄ¼şĞ´ÈëÃüÁî					
+		initGlobal(dir_proj, makefile);//éœ€è¦ä¿®æ”¹ï¼Œç”Ÿäº§ç›¸å¯¹è·¯å¾„çš„,åœ¨dir_projä¸‹ç›´æ¥äº§ç”Ÿdefined.*æ–‡ä»¶ã€‚
+		//å‘makefileæ–‡ä»¶å†™å…¥å‘½ä»¤					
 		writeMakeFile(makefile)
 		ln = ln + 1;
 	}
 	CloseBuf (hbuf)	
 	
-	Msg("ÇëÔÚÄúµÄ±àÒëÂ·¾¶Àï¼üÈë±àÒëÃüÁî£¬²¢¼ÓÉÏcheck²ÎÊı¡£Èç:make OEM_VENDOR=HoneyWell check");
+	Msg("è¯·åœ¨æ‚¨çš„ç¼–è¯‘è·¯å¾„é‡Œé”®å…¥ç¼–è¯‘å‘½ä»¤ï¼Œå¹¶åŠ ä¸Šcheckå‚æ•°ã€‚å¦‚:make OEM_VENDOR=HoneyWell check");
 
-	//Ïò¹¤³ÌÌí¼Ó»·¾³±äÁ¿
+	//å‘å·¥ç¨‹æ·»åŠ ç¯å¢ƒå˜é‡
 
 	con_file = cat(dir_proj, "\\defined.all");
 	setCondition(hProj, con_file);
@@ -246,7 +247,7 @@ macro setEnvironment()
 	while(ln < count)
 	{
 		makefile = GetBufLine (hbuf, ln);		
-		//´ÓmakefileÀïÇå³ıÃüÁî			
+		//ä»makefileé‡Œæ¸…é™¤å‘½ä»¤			
 		restoreMakeFile(makefile)
 		ln = ln + 1;
 	}
@@ -257,28 +258,28 @@ macro setEnvironment()
 	{
 		SyncProjEx (hProj, 0, 1, 0);
 					
-		Msg("»·¾³±äÁ¿ÒÑ¾­Éè¶¨¡£");			
+		Msg("ç¯å¢ƒå˜é‡å·²ç»è®¾å®šã€‚");			
 	}
 	else
 	{
-		Msg("Î´¼ì²âµ½ÁÙÊ±ÎÄ¼şdefinedºÍdefined.allÊÇ·ñ±àÒëÂ·¾¶ÓĞÎó?");
+		Msg("æœªæ£€æµ‹åˆ°ä¸´æ—¶æ–‡ä»¶definedå’Œdefined.allæ˜¯å¦ç¼–è¯‘è·¯å¾„æœ‰è¯¯?");
 	}	
 }
 
 macro clearEnvironment()
 {
-	//°æ±¾ÅĞ¶Ï,3.5065ÒÔÏÂ³ÌĞò²»Ö§³Ö
+	//ç‰ˆæœ¬åˆ¤æ–­,3.5065ä»¥ä¸‹ç¨‹åºä¸æ”¯æŒ
 	ProVer = GetProgramInfo ();
 	if(ProVer.versionMinor < 50 || ProVer.versionBuild < 60)
 	{
-		Msg("ÄúµÄSource Insight°æ±¾Ì«µÍ£¬ÈçĞèÊ¹ÓÃ´Ë¹¤¾ß£¬Çë°²×°3.50.0060¼°ÒÔÉÏ°æ¡£");
+		Msg("æ‚¨çš„Source Insightç‰ˆæœ¬å¤ªä½ï¼Œå¦‚éœ€ä½¿ç”¨æ­¤å·¥å…·ï¼Œè¯·å®‰è£…3.50.0060åŠä»¥ä¸Šç‰ˆã€‚");
 		stop
 	}
 
 	hProj = GetCurrentProj ();
 	dir_proj = GetCodeDir(hProj);
 	
-	//¸ù¾İºêÃûÁĞ±íÎÄ¼ş,Çå³ıÒÑ¾­´æÔÚµÄ»·¾³±äÁ¿
+	//æ ¹æ®å®ååˆ—è¡¨æ–‡ä»¶,æ¸…é™¤å·²ç»å­˜åœ¨çš„ç¯å¢ƒå˜é‡
 	con_file = cat(dir_proj, "\\defined.all");
 	if(0 == ifExist(con_file))
 	{
@@ -306,14 +307,14 @@ macro clearEnvironment()
 
 	SyncProjEx (hProj, 0, 1, 0);
 	
-	//ÇåÀíÖĞ¼äÎÄ¼ş,±ÜÃâ¶ÔÏÂ´Î²úÉú¸ÉÈÅ£¬ÓÃÓÚÇåÀí»·¾³±äÁ¿			
+	//æ¸…ç†ä¸­é—´æ–‡ä»¶,é¿å…å¯¹ä¸‹æ¬¡äº§ç”Ÿå¹²æ‰°ï¼Œç”¨äºæ¸…ç†ç¯å¢ƒå˜é‡			
 	com_str = cat("cmd /C \"del ",cat(dir_proj, "\\defined.all\""));
 	RunCmdLine (com_str, dir_proj, 1);		
 	
 	com_str = cat("cmd /C \"del ",cat(dir_proj, "\\defined\""));
 	RunCmdLine (com_str, dir_proj, 1);
 
-	Msg("ÒÑÍê³ÉÇåÀíÒÑÓĞµÄºê!");	
+	Msg("å·²å®Œæˆæ¸…ç†å·²æœ‰çš„å®!");	
 }
 
 macro GetCodeDir(hProj)
@@ -328,7 +329,7 @@ macro GetCodeDir(hProj)
 	}
 	else
 	{
-		//ËÑË÷È«²¿,ÌáÈ¡¹«¹²µÄÇ°×º£¬²»°üº¬×îºóµÄ'\'
+		//æœç´¢å…¨éƒ¨,æå–å…¬å…±çš„å‰ç¼€ï¼Œä¸åŒ…å«æœ€åçš„'\'
 		iCount = GetProjFileCount (hProj);
 		iFile = 1;
 		while(iFile < iCount)
@@ -346,7 +347,7 @@ macro GetCodeDir(hProj)
 				pos = pos + 1;
 			}
 			iFile = iFile + 1;
-		}//ĞèÒªÔÙ»ØËİÒ»ÏÂ,µ«ĞèÒªºÍÔ­Â·¾¶±È½ÏÒ»ÏÂºóÃæµÄ×Ö·ûÊÇ·ñÎª\,²»ÄÜ³öÏÖD:\\linux\buÕâÑùµÄÇé¿ö
+		}//éœ€è¦å†å›æº¯ä¸€ä¸‹,ä½†éœ€è¦å’ŒåŸè·¯å¾„æ¯”è¾ƒä¸€ä¸‹åé¢çš„å­—ç¬¦æ˜¯å¦ä¸º\,ä¸èƒ½å‡ºç°D:\\linux\buè¿™æ ·çš„æƒ…å†µ
 		if(strmid(filename, strlen(filename) - 1, strlen(filename)) == "\\")
 		{
 			filename = strmid(filename, 0, strlen(filename) - 1);
@@ -369,8 +370,8 @@ macro GetCodeDir(hProj)
 }
 
 
-//°ÑÒªĞ´½ødependÎÄ¼şµÄÃüÁîĞ´ÈëÏµÍ³µÄ»·¾³±äÁ¿Àï£¬
-//µ±×öÈ«¾Ö±äÁ¿Ê¹ÓÃ,±ãÓÚÒÔºó¸ü¸Ä³ÌĞò
+//æŠŠè¦å†™è¿›dependæ–‡ä»¶çš„å‘½ä»¤å†™å…¥ç³»ç»Ÿçš„ç¯å¢ƒå˜é‡é‡Œï¼Œ
+//å½“åšå…¨å±€å˜é‡ä½¿ç”¨,ä¾¿äºä»¥åæ›´æ”¹ç¨‹åº
 macro initGlobal(code_dir, makefile)
 {
 	dir_relative = "";
@@ -385,7 +386,7 @@ macro initGlobal(code_dir, makefile)
 		pos = pos + 1;
 	}
 
-	if(pos >= len)//makefileÔÚcode_dirµÄ×ÓÄ¿Â¼
+	if(pos >= len)//makefileåœ¨code_dirçš„å­ç›®å½•
 	{
 		pos = pos + 1;
 		len = strlen(makefile);
@@ -421,7 +422,7 @@ macro initGlobal(code_dir, makefile)
 		}
 		dir_relative = cat(dir_relative, dir_after);
 	}
-	PutEnv("cmd_count", "5");//ĞèÒª²åÈëµÄÃüÁîĞĞÊı
+	PutEnv("cmd_count", "5");//éœ€è¦æ’å…¥çš„å‘½ä»¤è¡Œæ•°
 
 	putEnv("cmd_str0","check:");	
 	putEnv("cmd_str1","\t-\@echo 'Collecting condition variables......';find @dir_relative@ -name *.c* -exec grep -E '^\\s*#if|^\\s*#elif' {} \\; > @dir_relative@tmp ;");	
@@ -430,10 +431,10 @@ macro initGlobal(code_dir, makefile)
 	putEnv("cmd_str4","\t-\@echo $(CFLAGS)|sed -r 's/(-[a-zA-Z])/\\n\\1/g' | grep -E '(-D|-U).*' -o | sed -r 's/=.*|\\s+//g' > @dir_relative@defined;rm @dir_relative@tmp*;");
 } 
 
-//´ÓÎÄ¼şÖĞÉ¾³ıĞĞ,°üÀ¨lnËùÔÚĞĞÒÔ¼°Ö®ºóµÄcountĞĞ,·µ»ØÉ¾³ıµôµÄĞĞÊı
+//ä»æ–‡ä»¶ä¸­åˆ é™¤è¡Œ,åŒ…æ‹¬lnæ‰€åœ¨è¡Œä»¥åŠä¹‹åçš„countè¡Œ,è¿”å›åˆ é™¤æ‰çš„è¡Œæ•°
 macro restoreMakeFile(depend_file)
 {
-	str = GetEnv("cmd_str0");//±êÖ¾ÄÚÈİ
+	str = GetEnv("cmd_str0");//æ ‡å¿—å†…å®¹
 	ln = lineOfFile(depend_file,str);
 	count = GetEnv("cmd_count");// 4; 
 	
@@ -459,14 +460,14 @@ macro restoreMakeFile(depend_file)
 	}
 }
 
-//ÏòdependÎÄ¼şĞ´ÈëlinuxÃüÁî(ÓÃÓÚÌáÈ¡ºêÒÔ¼°´¦Àí),·µ»Ø²åÈëÃüÁîµÄĞĞÊı
+//å‘dependæ–‡ä»¶å†™å…¥linuxå‘½ä»¤(ç”¨äºæå–å®ä»¥åŠå¤„ç†),è¿”å›æ’å…¥å‘½ä»¤çš„è¡Œæ•°
 macro writeMakeFile(depend_file)
 {
-	str = GetEnv("cmd_str0");//±êÖ¾ÄÚÈİ
+	str = GetEnv("cmd_str0");//æ ‡å¿—å†…å®¹
 	ln = lineOfFile(depend_file,str);
 
 	cmdLnCnt = GetEnv("cmd_count");// 4;
-	if(0 == ln)//ÎÄ¼şÖĞÎŞÃüÁî
+	if(0 == ln)//æ–‡ä»¶ä¸­æ— å‘½ä»¤
 	{								
 		if(0 == depend_file )
 		{
@@ -500,7 +501,7 @@ macro writeMakeFile(depend_file)
 	}
 }
 
-//¸ù¾İfileµÄÄÚÈİ£¬ÏòhProjÌí¼Ó»·¾³±äÁ¿
+//æ ¹æ®fileçš„å†…å®¹ï¼Œå‘hProjæ·»åŠ ç¯å¢ƒå˜é‡
 macro setCondition(hProj, con_file)
 {	
 	ln = 0;
@@ -528,7 +529,7 @@ macro setCondition(hProj, con_file)
 	return ln;
 }
 
-//Çå³ı¹¤³ÌÄÚ£¬fileÎÄ¼şÖ¸¶¨µÄ»·¾³±äÁ¿,·µ»ØÉ¾³ıµôµÄ±äÁ¿Êı
+//æ¸…é™¤å·¥ç¨‹å†…ï¼Œfileæ–‡ä»¶æŒ‡å®šçš„ç¯å¢ƒå˜é‡,è¿”å›åˆ é™¤æ‰çš„å˜é‡æ•°
 macro clearCondition(hProj,file)
 {
 	if(0 == ifExist(file))
