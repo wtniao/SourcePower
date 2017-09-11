@@ -25,7 +25,9 @@ This is a source insight script tool,so we got to set it up in source insight.
 
 # Usage
 1.Pull the sample project & open it,you'll see four statements the you don't which will be excuted.
+
 ![Bad](https://github.com/wtniao/SourcePower/blob/master/sample/bad.png?raw=true)
+
 2.Click Project=>SetEnvironment ,you'll see what to do.
 
 3.open you terminal & locate to the build directory of this sample project.
@@ -35,4 +37,5 @@ This is a source insight script tool,so we got to set it up in source insight.
 5.Turn back to source insight ,and click the Sure button to go on.
 
 6.Then you'll see like This
+
 ![Bad](https://github.com/wtniao/SourcePower/blob/master/sample/nice.png?raw=true)
