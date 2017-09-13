@@ -126,7 +126,8 @@ macro lineOfFile(file, str)
 	}
 }
 macro GetPath(str)
-{//return the position of '\' in str reversely
+{
+//return the position of '\' in str reversely
 	pos = strlen(str) - 1;
 	while(pos >= 0)
 	{	
@@ -167,7 +168,7 @@ macro setEnvironment()
 	ProVer = GetProgramInfo ();
 	if(ProVer.versionMinor < 50 || ProVer.versionBuild < 60)
 	{
-		Msg("您的Source Insight版本太低，如需使用此工具，请安装3.50.0060及以上版。");
+		Msg("Your Source Insight version do not support this tool，Please upgrade to at least 3.50.0060.");
 		stop
 	}
 
@@ -208,13 +209,13 @@ macro setEnvironment()
 			CloseBuf (hbuf);
 			cmdline = "notepad @ListFile@";
 			RunCmdLine(cmdline, dir_proj, 0);
-			Msg("请在@ListFile@内添加makefile路径,如有多个makefile,则每个路径一行,完成后点确定。如第一行为c:\\code\\makefile");
+			Msg("Please manually add path of makefiles to @ListFile@, each one occupys one line. For example 'c:\\code\\makefile'");
 			hbuf = OpenBuf (ListFile);
 			count = GetBufLineCount (hbuf);
 			if(count <= 0 )
 			{
 				CloseBuf (hbuf);
-				Msg("未在makeList.txt中指明makefile路径,将退出!");
+				Msg("Fail to  find any makefile in makeList.txt! Quiting...");
 				stop;
 			}				
 		}
@@ -231,7 +232,7 @@ macro setEnvironment()
 	}
 	CloseBuf (hbuf)	
 	
-	Msg("请在您的编译路径里键入编译命令，并加上check参数。如:make OEM_VENDOR=HoneyWell check");
+	Msg("Please add word 'check' in your compiling command.For example,previous:'make VENDOR=Microsoft' now:'make VENDOR=Microsoft check'");
 
 	//set up project
 
@@ -258,11 +259,11 @@ macro setEnvironment()
 	{
 		SyncProjEx (hProj, 0, 1, 0);
 					
-		Msg("环境变量已经设定。");			
+		Msg("Environment has setted up");			
 	}
 	else
 	{
-		Msg("未检测到临时文件defined和defined.all是否编译路径有误?");
+		Msg("Fail to locate file "defined" and "defined.all"！Did your compile in correct path?");
 	}	
 }
 
@@ -272,7 +273,7 @@ macro clearEnvironment()
 	ProVer = GetProgramInfo ();
 	if(ProVer.versionMinor < 50 || ProVer.versionBuild < 60)
 	{
-		Msg("您的Source Insight版本太低，如需使用此工具，请安装3.50.0060及以上版。");
+		Msg("Your Source Insight version do not support this tool，Please upgrade to at least 3.50.0060.");
 		stop
 	}
 
@@ -314,7 +315,7 @@ macro clearEnvironment()
 	com_str = cat("cmd /C \"del ",cat(dir_proj, "\\defined\""));
 	RunCmdLine (com_str, dir_proj, 1);
 
-	Msg("已完成清理已有的宏!");	
+	Msg("Environment restoration done!");	
 }
 
 macro GetCodeDir(hProj)
