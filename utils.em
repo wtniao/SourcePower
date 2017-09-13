@@ -31,7 +31,7 @@ macro Max(a,b)
 	return b;
 }
 
-//取行的名称,例如取"-Dversion=2.6"中的"version"
+//Return the key of a key-value string.For example, return "version" from "-Dversion=2.6"
 macro nameOf(str)
 {
 	pos=0;
@@ -55,7 +55,7 @@ macro nameOf(str)
 	}
 }
 
-//取等式的值,例如取"-Dversion=2.6"中的"2.6"
+//Return the value of a key-value string.For example, return "2.6" from "-Dversion=2.6"
 macro valueOf(str)
 {
 	pos=0;
@@ -84,7 +84,7 @@ macro valueOf(str)
 	}
 }
 
-//判断文件是否存在,0代表不存在,1代表存在
+//Check file existence
 macro ifExist(file)
 {
 	hbuf = OpenBuf(file);
@@ -99,7 +99,7 @@ macro ifExist(file)
 	}
 }
 
-//返回特定内容在文件中的行序号
+//Return the line NO of the perticular string in the given file
 macro lineOfFile(file, str)
 {
 	if(0 == ifExist(file))
@@ -126,7 +126,7 @@ macro lineOfFile(file, str)
 	}
 }
 macro GetPath(str)
-{//倒序查找"\"
+{//return the position of '\' in str reversely
 	pos = strlen(str) - 1;
 	while(pos >= 0)
 	{	
@@ -163,7 +163,7 @@ macro log()
 
 macro setEnvironment()
 {
-	//版本判断,3.5065以下程序不支持
+	//Check the version of source insight,because version under 3.5065 is lack of some interface
 	ProVer = GetProgramInfo ();
 	if(ProVer.versionMinor < 50 || ProVer.versionBuild < 60)
 	{
@@ -171,17 +171,17 @@ macro setEnvironment()
 		stop
 	}
 
-	//获得代码所在目录，不论工程建在哪里
+	//Get the directory of source code
 	hProj = GetCurrentProj ();
 	dir_proj = GetCodeDir(hProj);
 
-	//查找makefile,生产makelist.txt文件
+	//Finding makefiles,append them  to makelist.txt
 	cmdline = cat("cmd /C \"dir ", "makefile /S /B > makeList.txt\"");
 	RunCmdLine(cmdline, dir_proj, 1);
 
 	ListFile = cat (dir_proj,"\\makeList.txt");
 
-	//根据makeList.txt的信息，为每一个makefile都添加命令
+	//With respect to every entries in makeList.txt，proccess every makefile by inserting extra codes
 	hbuf = OpenBuf (ListFile)
 	count = 	GetBufLineCount (hbuf)
 	if(count == 0 || count == 1 && strlen(GetBufLine(hbuf, 0)) == 0)
@@ -224,8 +224,8 @@ macro setEnvironment()
 	while(ln < count)
 	{
 		makefile = GetBufLine (hbuf, ln);
-		initGlobal(dir_proj, makefile);//需要修改，生产相对路径的,在dir_proj下直接产生defined.*文件。
-		//向makefile文件写入命令					
+		initGlobal(dir_proj, makefile);//TODO
+		//set up makefile					
 		writeMakeFile(makefile)
 		ln = ln + 1;
 	}
@@ -233,7 +233,7 @@ macro setEnvironment()
 	
 	Msg("请在您的编译路径里键入编译命令，并加上check参数。如:make OEM_VENDOR=HoneyWell check");
 
-	//向工程添加环境变量
+	//set up project
 
 	con_file = cat(dir_proj, "\\defined.all");
 	setCondition(hProj, con_file);
@@ -247,7 +247,7 @@ macro setEnvironment()
 	while(ln < count)
 	{
 		makefile = GetBufLine (hbuf, ln);		
-		//从makefile里清除命令			
+		//restore makefile		
 		restoreMakeFile(makefile)
 		ln = ln + 1;
 	}
@@ -268,7 +268,7 @@ macro setEnvironment()
 
 macro clearEnvironment()
 {
-	//版本判断,3.5065以下程序不支持
+	//version check
 	ProVer = GetProgramInfo ();
 	if(ProVer.versionMinor < 50 || ProVer.versionBuild < 60)
 	{
@@ -279,7 +279,7 @@ macro clearEnvironment()
 	hProj = GetCurrentProj ();
 	dir_proj = GetCodeDir(hProj);
 	
-	//根据宏名列表文件,清除已经存在的环境变量
+	//Restore the project
 	con_file = cat(dir_proj, "\\defined.all");
 	if(0 == ifExist(con_file))
 	{
@@ -307,7 +307,7 @@ macro clearEnvironment()
 
 	SyncProjEx (hProj, 0, 1, 0);
 	
-	//清理中间文件,避免对下次产生干扰，用于清理环境变量			
+	//Clear temperary files
 	com_str = cat("cmd /C \"del ",cat(dir_proj, "\\defined.all\""));
 	RunCmdLine (com_str, dir_proj, 1);		
 	
@@ -329,7 +329,6 @@ macro GetCodeDir(hProj)
 	}
 	else
 	{
-		//搜索全部,提取公共的前缀，不包含最后的'\'
 		iCount = GetProjFileCount (hProj);
 		iFile = 1;
 		while(iFile < iCount)
@@ -347,7 +346,7 @@ macro GetCodeDir(hProj)
 				pos = pos + 1;
 			}
 			iFile = iFile + 1;
-		}//需要再回溯一下,但需要和原路径比较一下后面的字符是否为\,不能出现D:\\linux\bu这样的情况
+		}
 		if(strmid(filename, strlen(filename) - 1, strlen(filename)) == "\\")
 		{
 			filename = strmid(filename, 0, strlen(filename) - 1);
@@ -369,9 +368,7 @@ macro GetCodeDir(hProj)
 	}
 }
 
-
-//把要写进depend文件的命令写入系统的环境变量里，
-//当做全局变量使用,便于以后更改程序
+//Prepare contents to be written to makefile
 macro initGlobal(code_dir, makefile)
 {
 	dir_relative = "";
@@ -386,7 +383,7 @@ macro initGlobal(code_dir, makefile)
 		pos = pos + 1;
 	}
 
-	if(pos >= len)//makefile在code_dir的子目录
+	if(pos >= len)
 	{
 		pos = pos + 1;
 		len = strlen(makefile);
@@ -422,7 +419,7 @@ macro initGlobal(code_dir, makefile)
 		}
 		dir_relative = cat(dir_relative, dir_after);
 	}
-	PutEnv("cmd_count", "5");//需要插入的命令行数
+	PutEnv("cmd_count", "5");
 
 	putEnv("cmd_str0","check:");	
 	putEnv("cmd_str1","\t-\@echo 'Collecting condition variables......';find @dir_relative@ -name *.c* -exec grep -E '^\\s*#if|^\\s*#elif' {} \\; > @dir_relative@tmp ;");	
@@ -431,10 +428,10 @@ macro initGlobal(code_dir, makefile)
 	putEnv("cmd_str4","\t-\@echo $(CFLAGS)|sed -r 's/(-[a-zA-Z])/\\n\\1/g' | grep -E '(-D|-U).*' -o | sed -r 's/=.*|\\s+//g' > @dir_relative@defined;rm @dir_relative@tmp*;");
 } 
 
-//从文件中删除行,包括ln所在行以及之后的count行,返回删除掉的行数
+//Restore makefile
 macro restoreMakeFile(depend_file)
 {
-	str = GetEnv("cmd_str0");//标志内容
+	str = GetEnv("cmd_str0");
 	ln = lineOfFile(depend_file,str);
 	count = GetEnv("cmd_count");// 4; 
 	
@@ -460,14 +457,14 @@ macro restoreMakeFile(depend_file)
 	}
 }
 
-//向depend文件写入linux命令(用于提取宏以及处理),返回插入命令的行数
+//Setup makefile
 macro writeMakeFile(depend_file)
 {
-	str = GetEnv("cmd_str0");//标志内容
+	str = GetEnv("cmd_str0");
 	ln = lineOfFile(depend_file,str);
 
-	cmdLnCnt = GetEnv("cmd_count");// 4;
-	if(0 == ln)//文件中无命令
+	cmdLnCnt = GetEnv("cmd_count");
+	if(0 == ln)//Find none
 	{								
 		if(0 == depend_file )
 		{
@@ -501,7 +498,7 @@ macro writeMakeFile(depend_file)
 	}
 }
 
-//根据file的内容，向hProj添加环境变量
+//Set up Project
 macro setCondition(hProj, con_file)
 {	
 	ln = 0;
@@ -529,7 +526,7 @@ macro setCondition(hProj, con_file)
 	return ln;
 }
 
-//清除工程内，file文件指定的环境变量,返回删除掉的变量数
+//Restore project
 macro clearCondition(hProj,file)
 {
 	if(0 == ifExist(file))
