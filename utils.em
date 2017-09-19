@@ -232,7 +232,7 @@ macro setEnvironment()
 	}
 	CloseBuf (hbuf)	
 	
-	Msg("Please add word 'check' in your compiling command.For example,previous:'make VENDOR=Microsoft' now:'make VENDOR=Microsoft check'");
+	Msg("Please change target to 'check' in your compiling command.Then run it.For example,previous:'make VENDOR=Microsoft lib' now:'make VENDOR=Microsoft check'");
 
 	//set up project
 
