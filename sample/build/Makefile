@@ -2,5 +2,5 @@ CFLAGS = -DMAC
 
 CC = gcc
 
-sample:sample.cpp
-	$(CC) sample.cpp -o sample
+sample:../src/sample.cpp
+	$(CC) ../src/sample.cpp -o sample
