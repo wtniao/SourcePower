@@ -13,7 +13,8 @@ And what's more,it offers quick operation for svn differ,svn log, opening the ex
 Any problem found ,contact me 
 # Communication
 wtniao@163.com 
-ZhiHu:ibirds
+ZhiHu:[ibirds](https://www.zhihu.com/people/niao-niao-79/activities "ibirds")
+
 
 # Installation
 This is a source insight script tool,so we got to set up in source insight.
