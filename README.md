@@ -10,12 +10,6 @@ This script  turn the inactive code to gray looking like comments by analyzing m
 
 And what's more,it offers quick operation for svn differ,svn log, opening the explorer and locating the current file.
 
-Any problem found ,contact me 
-# Communication
-wtniao@163.com 
-ZhiHu:[ibirds](https://www.zhihu.com/people/niao-niao-79/activities "ibirds")
-
-
 # Installation
 This is a source insight script tool,so we got to set up in source insight.
 
@@ -45,3 +39,9 @@ This is a source insight script tool,so we got to set up in source insight.
 6.Then you'll see like This
 
 ![Good](https://github.com/wtniao/SourcePower/blob/master/sample/nice.png?raw=true)
+
+# Help
+This script works by analysing the variable named CFLAGS in your makefile which will pass -D to gcc or g++.So if your variable who passing -D to gcc or g++ isn't CFLAGS, you should modify this script.
+Any help please contact me via
+Email:wtniao@163.com 
+ZhiHu:[ibirds](https://www.zhihu.com/people/niao-niao-79/activities "ibirds")
